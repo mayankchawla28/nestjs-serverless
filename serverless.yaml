@@ -1,0 +1,29 @@
+service: my-nest-project
+
+useDotenv: true
+
+plugins: 
+  - 'serverless-plugin-typescript'
+  - serverless-plugin-optimize
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs16.x
+  environment:
+    DB: ${env:DB}
+    DAS_AWS_REGION: ${env:DAS_AWS_REGION}
+    DAS_AWS_ACCESS_KEY_ID: ${env:DAS_AWS_ACCESS_KEY_ID}
+    DAS_AWS_SECRET_ACCESS_KEY: ${env:DAS_AWS_SECRET_ACCESS_KEY}
+    COGNITO_POOL_ID: ${env:COGNITO_POOL_ID}
+
+functions:
+  main:
+    handler: src/lambda.handler
+    events:
+      - http:
+          method: any
+          path: /
+      - http:
+          method: any
+          path: '{proxy+}'
